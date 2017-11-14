@@ -31,7 +31,7 @@ def next_pic(request):
 
 def _handle_pic(f):
     filename = str(random.randint(0, 100)) + f.name
-    filepath = os.path.join(settings.BASE_DIR,"wall", "static", "pics", filename)
+    filepath = os.path.join(settings.BASE_DIR, "static", "pics", filename)
     with open(filepath, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
@@ -43,7 +43,7 @@ def new_pic(request):
         form = UploadPicForm(request.POST, request.FILES)
         if form.is_valid():
             filename = _handle_pic(request.FILES['file'])
-            Picture.objects.create(poster=request.POST['poster'], url=static(filename), ip=request.META.get('REMOTE_ADDR'))
+            Picture.objects.create(poster=request.POST['poster'], url=static("pics/" + filename), ip=request.META.get('REMOTE_ADDR'))
             print(static(filename))
             return HttpResponseRedirect(reverse('show_pics'))
         else:
