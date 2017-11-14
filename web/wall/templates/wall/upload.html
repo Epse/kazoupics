@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="{% url 'newpic' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+    <div class="row">
+        {{ from.non_field_errors }}
+    </div>
+    <div class="row">
+        {{ form.poster.errors }}
+        {{ form.poster.label_tag }}
+        {{ form.poster }}
+    </div>
+    <div class="row">
+        {{ form.file.errors }}
+        {{ form.file.label_tag }}
+        {{ form.file }}
+    </div>
+    <input class="button-primary" value="Verzenden" type="submit">
+</form>
+{% endblock content %}

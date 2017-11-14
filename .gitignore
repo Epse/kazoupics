@@ -1,0 +1,5 @@
+pics/
+db.sqlite3
+kazoupics/__pycache__/
+wall/__pycache__/
+wall/migrations/__pycache__/

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url 'newpic' %}" class="button button-primary">Post een foto!</a>
+<p>
+    <div id="img">
+        <img src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
+    </div>
+    <div id="poster">
+        {{ pic.poster }}
+    </div>
+</p>
+{% endblock content %}
+
+{% block afterbody %}
+  {% load static %}
+  <script type="text/javascript" src='{% static "wall/js/jquery-1.12.1.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "wall/js/kazou.js" %}'></script>
+{% endblock afterbody %}
