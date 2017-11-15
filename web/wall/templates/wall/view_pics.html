@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row" style="margin-top: 3em;">
-    <a href="{% url 'newpic' %}" class="button button-primary">Post een foto!</a>
+{% if bigscreen is False %}
+<div class="section">
+    <div class="container">
+        <a href="{% url 'newpic' %}" class="button button-primary">Post een foto!</a>
+        <div id="img">
+        </div>
+    </div>
 </div>
-<div class="row">
-    <div id="img">
-        <img class="u-max-full-width" src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
+{% endif %}
+<div class="section">
+    <div class="container {% if bigscreen %}wide{% endif %}">
+        <img class="u-max-full-width hero-image" src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
         <h2 id="poster">{{ pic.poster }}</h2>
     </div>
 </div>

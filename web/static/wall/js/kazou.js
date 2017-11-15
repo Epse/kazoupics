@@ -2,7 +2,7 @@ function reqListener() {
     console.log(this.responseText);
     var data = JSON.parse(this.responseText);
     var poster_div = $('#poster');
-    var img = $('#img img');
+    var img = $('.hero-image');
 
     poster_div.text(data.poster);
     img.attr("src", data.url);

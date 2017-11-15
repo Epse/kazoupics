@@ -1,0 +1,17 @@
+.section {
+    margin-top: 2em;
+}
+
+.container.wide {
+    max-width: 90%;
+}
+
+.hero-image {
+    display: block;
+    margin: 0 auto;
+    max-height: 80vh;
+}
+
+#poster {
+    text-align: center;
+}

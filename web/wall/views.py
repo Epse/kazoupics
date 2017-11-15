@@ -9,23 +9,26 @@ from .forms import UploadPicForm
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
-def show_pics(request):
+def _get_pic():
     pic_set = Picture.objects.order_by('-timestamp')[:1]
     if len(pic_set) < 1:
         pic = Picture(url="//lorempixel.com/640/480", poster="lorempixel")
     else:
         pic = pic_set[0]
 
-    return render(request, "wall/view_pics.html", {'pic': pic})
+    return pic
+
+def show_pics(request):
+    pic = _get_pic()
+    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': False})
+
+def bigscreen(request):
+    pic = _get_pic()
+    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True})
 
 
 def next_pic(request):
-    pic_set = Picture.objects.order_by('-timestamp')[:1]
-    if len(pic_set) < 1:
-        pic = Picture(url="//lorempixel.com/640/480", poster="lorempixel")
-    else:
-        pic = pic_set[0]
-
+    pic = _get_pic()
     return JsonResponse({ 'url': pic.url, 'poster': pic.poster })
 
 
