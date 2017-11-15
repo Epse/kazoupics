@@ -4,12 +4,16 @@
 <div class="section">
     <div class="container">
         <h1>Uw apparaat of naam is geblokkeerd.</h1>
+        {% if passive_agressive %}
         <h2>Dikke pech</h2>
+        {% endif %}
     </div>
 </div>
+{% if passive_agressive %}
 <div class="section">
     <div class="container">
         <div class="tenor-gif-embed" data-postid="5649654" data-share-method="host" data-width="100%" data-aspect-ratio="1.5"><a href="https://tenor.com/view/slap-ban-banned-permabanned-ghj-gif-5649654">Slap Ban GIF</a> from <a href="https://tenor.com/search/slap-gifs">Slap GIFs</a></div><script type="text/javascript" async src="https://tenor.com/embed.js"></script>
     </div>
 </div>
+{% endif %}
 {% endblock content %}

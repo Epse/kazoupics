@@ -46,7 +46,7 @@ def new_pic(request):
     try:
         blocked_poster = Blocked_Poster.objects.get(ip=request.META.get('REMOTE_ADDR'))
         # this only happens if there is such a poster
-        return render(request, 'wall/blocked.html')
+        return render(request, 'wall/blocked.html', {'passive_agressive': settings.PASSIVE_AGRESSIVE})
     except ObjectDoesNotExist:
         # We're all fine here. Still need to test the username though
         pass
@@ -56,7 +56,7 @@ def new_pic(request):
         if form.is_valid():
             try:
                 blocked_poster = Blocked_Poster.objects.get(name=request.POST['poster'])
-                return render(request, 'wall/blocked.html')
+                return render(request, 'wall/blocked.html', {'passive_agressive': settings.PASSIVE_AGRESSIVE})
             except ObjectDoesNotExist:
                 pass
 
