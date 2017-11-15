@@ -10,5 +10,5 @@ class Picture(models.Model):
 
 
 class Blocked_Poster(models.Model):
-    name = models.CharField(max_length=255)
-    ip = models.CharField(max_length=100)
+    name = models.CharField(max_length=255, db_index=True)
+    ip = models.CharField(max_length=100, db_index=True)

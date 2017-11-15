@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponseRedirect
 from django.conf import settings
-from .models import Picture
+from django.core.exceptions import ObjectDoesNotExist
+from .models import Picture, Blocked_Poster
 from .forms import UploadPicForm
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
@@ -42,9 +43,23 @@ def _handle_pic(f):
 
 
 def new_pic(request):
+    try:
+        blocked_poster = Blocked_Poster.objects.get(ip=request.META.get('REMOTE_ADDR'))
+        # this only happens if there is such a poster
+        return render(request, 'wall/blocked.html')
+    except ObjectDoesNotExist:
+        # We're all fine here. Still need to test the username though
+        pass
+
     if request.method == 'POST':
         form = UploadPicForm(request.POST, request.FILES)
         if form.is_valid():
+            try:
+                blocked_poster = Blocked_Poster.objects.get(name=request.POST['poster'])
+                return render(request, 'wall/blocked.html')
+            except ObjectDoesNotExist:
+                pass
+
             filename = _handle_pic(request.FILES['file'])
             Picture.objects.create(poster=request.POST['poster'], url=static("pics/" + filename), ip=request.META.get('REMOTE_ADDR'))
             print(static(filename))
