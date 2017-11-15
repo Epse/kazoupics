@@ -20,7 +20,8 @@ from wall.views import show_pics, next_pic, new_pic, bigscreen
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^next/', next_pic, name='next'),
+    url(r'^next/$', next_pic, name='next'),
+    url(r'^next/(?P<current>.+)/$', next_pic),
     url(r'^newpic/', new_pic, name='newpic'),
     url(r'^bigscreen/', bigscreen, name='bigscreen'),
     url(r'^$', show_pics, name='show_pics')

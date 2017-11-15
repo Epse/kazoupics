@@ -28,8 +28,16 @@ def bigscreen(request):
     return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True})
 
 
-def next_pic(request):
-    pic = _get_pic()
+def next_pic(request, current=''):
+    if current is '':
+        pic = _get_pic()
+    else:
+        try:
+            current_pic = Picture.objects.get(url=current)
+            pic = Picture.objects.get(id=current_pic.id + 1)
+        except ObjectDoesNotExist:
+            pic = _get_pic()
+
     return JsonResponse({ 'url': pic.url, 'poster': pic.poster })
 
 

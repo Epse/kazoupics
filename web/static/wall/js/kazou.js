@@ -13,8 +13,8 @@ $(function() {
         var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", reqListener);
         console.log(window.location.protocol+"//"+window.location.host);
-        oReq.open("GET", "/next");
+        oReq.open("GET", "/next/" + $('.hero-image').attr('src'));
         oReq.send();
-    }, 500);
+    }, 1000);
 
 });
