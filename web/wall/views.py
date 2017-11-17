@@ -21,11 +21,11 @@ def _get_pic():
 
 def show_pics(request):
     pic = _get_pic()
-    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': False})
+    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': False, 'min_display_time': settings.MIN_DISPLAY_TIME})
 
 def bigscreen(request):
     pic = _get_pic()
-    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True})
+    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True, 'min_display_time': settings.MIN_DISPLAY_TIME})
 
 
 def next_pic(request, current=''):
