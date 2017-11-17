@@ -43,7 +43,7 @@ def next_pic(request, current=''):
 
 def _handle_pic(f):
     filename = str(random.randint(0, 100)) + f.name
-    filepath = os.path.join(settings.BASE_DIR, "static", "pics", filename)
+    filepath = os.path.join(settings.PIC_STORAGE_LOCATION, filename)
     with open(filepath, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)

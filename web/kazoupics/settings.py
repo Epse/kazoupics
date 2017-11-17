@@ -125,3 +125,4 @@ STATICFILES_DIRS = [
 ]
 
 PASSIVE_AGRESSIVE = True
+PIC_STORAGE_LOCATION = os.path.join(BASE_DIR, 'static', 'pics')
