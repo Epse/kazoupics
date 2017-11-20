@@ -43,3 +43,8 @@ body {
 form input[type=text] {
     color: #282f39;
 }
+
+.bigscreen {
+    margin-left: -3em;
+    margin-right: -3em;
+}

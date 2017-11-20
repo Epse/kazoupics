@@ -10,7 +10,7 @@
     </div>
 </div>
 {% endif %}
-<div class="section">
+<div class="section {% if bigscreen %}bigscreen{% endif %}">
     <div class="container {% if bigscreen %}wide{% endif %}">
         <img class="u-max-full-width hero-image" src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
         <h2 id="poster">{{ pic.poster }}</h2>
