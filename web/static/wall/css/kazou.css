@@ -39,3 +39,7 @@ body {
     width: 100%;
     box-sizing: border-box;
 }
+
+form input[type=text] {
+    color: #282f39;
+}
