@@ -1,5 +1,12 @@
+html {
+    background-color: #00cf97;
+}
+body {
+    font-family: 'Open Sans Condensed', sans-serif; !important
+    color: #282f39; !important
+}
 .section {
-    margin-top: 2em;
+    padding-top: 2em;
 }
 
 .container.wide {
@@ -14,4 +21,21 @@
 
 #poster {
     text-align: center;
+    font-weight: bold;
+    background-color: #282f39;
+    color: #eee;
+    padding: 1em;
+    margin-top: 0.5em;
+    text-transform: capitalize;
+}
+
+.uploadform {
+    background-color: #282f39;
+    padding: 1em 2em 1em 2em;
+    color: #eee;
+}
+
+.uploadform form input {
+    width: 100%;
+    box-sizing: border-box;
 }
