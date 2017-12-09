@@ -65,3 +65,24 @@ body {
 form input[type=text] {
     color: #282f39;
 }
+
+#sms {
+    background-color: #282f39;
+    font-size: 5vh;
+    overflow: hidden;
+    color: #eee;
+    position: absolute;
+    top: 1vh;
+    right: 1vw;
+    padding: 1em 1em 1em 1em;
+    max-width: 20vw;
+}
+
+#sms .sender {
+    font-weight: bold;
+}
+
+#sms .sms_body {
+    line-height: 1.1;
+    word-wrap: break-word;
+}

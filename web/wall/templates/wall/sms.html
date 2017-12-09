@@ -1,0 +1,9 @@
+<!-- test -->
+{% for sms in sms_list %}
+<div class="sender">
+    {{ sms.sender }}:
+</div>
+<div class="sms_body">
+    {{ sms.text }}
+</div>
+{% endfor %}

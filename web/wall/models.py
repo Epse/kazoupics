@@ -16,3 +16,13 @@ class Blocked_Poster(models.Model):
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
         return super(Blocked_Poster, self).save(*args, **kwargs)
+
+
+class Sms(models.Model):
+    sender = models.CharField(max_length=20, blank=False, null=False)
+    text = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now, db_index=True)
+
+
+class Blocked_Number(models.Model):
+    number = models.CharField(max_length=20, blank=False, null=False)

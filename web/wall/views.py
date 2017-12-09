@@ -2,10 +2,10 @@ import os
 import random
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Picture, Blocked_Poster
+from .models import Picture, Blocked_Poster, Sms, Blocked_Number
 from .forms import UploadPicForm
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
@@ -25,7 +25,8 @@ def show_pics(request):
 
 def bigscreen(request):
     pic = _get_pic()
-    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True, 'min_display_time': settings.MIN_DISPLAY_TIME})
+    sms_list = Sms.objects.order_by('-timestamp')[:5]
+    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True, 'min_display_time': settings.MIN_DISPLAY_TIME, 'sms_list': sms_list})
 
 
 def next_pic(request, current=''):
@@ -78,3 +79,24 @@ def new_pic(request):
     else:
         form = UploadPicForm()
         return render(request, 'wall/upload.html', {'form': form})
+
+
+def incoming_sms(request):
+    phone = request.GET.get('phone')
+    text = request.GET.get('text')
+
+    if phone is None or text is None:
+        return HttpResponse('')
+    else:
+        try:
+            blocked_number = Blocked_Number.objects.get(number=phone)
+            return HttpResponse('')
+        except ObjectDoesNotExist:
+            pass
+        Sms.objects.create(sender=phone, text=text)
+        return HttpResponse('')
+
+
+def get_sms(request):
+    sms_list = Sms.objects.order_by('-timestamp')[:5]
+    return render(request, "wall/sms.html", {'sms_list': sms_list})

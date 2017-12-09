@@ -22,6 +22,16 @@
     {% load static %}
     <img class="u-max-full-width" alt="logo" src="{% static 'wall/img/logo.png' %}"/>
 </div>
+<div id="sms">
+    {% for sms in sms_list %}
+    <div class="sender">
+        {{ sms.sender }}:
+    </div>
+    <div class="sms_body">
+        {{ sms.text }}
+    </div>
+    {% endfor %}
+</div>
 {% endif %}
 
 {% endblock content %}
@@ -30,7 +40,6 @@
   {% load static %}
   <script type="text/javascript">
    function reqListener() {
-       console.log(this.responseText);
        var data = JSON.parse(this.responseText);
        var poster_div = document.getElementById('poster');
        var img = document.querySelector('.hero-image');
@@ -39,14 +48,24 @@
        img.setAttribute("src", data.url);
    }
 
+   function smsListener() {
+       document.getElementById('sms').innerHTML = this.responseText;
+   }
+
    window.addEventListener("load", e => {
        window.setInterval(function() {
            var oReq = new XMLHttpRequest();
            oReq.addEventListener("load", reqListener);
-           console.log(window.location.protocol+"//"+window.location.host);
            var hero_image = document.querySelector('.hero-image');
            oReq.open("GET", "/next/" + hero_image.getAttribute("src"));
            oReq.send();
+           {% if bigscreen %}
+           var smsReq = new XMLHttpRequest();
+           smsReq.addEventListener("load", smsListener);
+           smsReq.open("GET", "/getsms/");
+           smsReq.send();
+           {% endif %}
+
        }, {{ min_display_time }});
 
    });

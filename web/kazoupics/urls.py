@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from wall.views import show_pics, next_pic, new_pic, bigscreen
+from wall.views import show_pics, next_pic, new_pic, bigscreen, incoming_sms, get_sms
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^next/$', next_pic, name='next'),
     url(r'^next/(?P<current>.+)/$', next_pic),
-    url(r'^newpic/', new_pic, name='newpic'),
+    url(r'^newpic/$', new_pic, name='newpic'),
     url(r'^bigscreen/', bigscreen, name='bigscreen'),
+    url(r'^incomingsms/$', incoming_sms),
+    url(r'^getsms/$', get_sms),
     url(r'^$', show_pics, name='show_pics')
 ]
