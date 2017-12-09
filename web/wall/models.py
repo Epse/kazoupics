@@ -12,3 +12,7 @@ class Picture(models.Model):
 class Blocked_Poster(models.Model):
     name = models.CharField(max_length=255, db_index=True, blank=True, null=True)
     ip = models.CharField(max_length=100, db_index=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        return super(Blocked_Poster, self).save(*args, **kwargs)

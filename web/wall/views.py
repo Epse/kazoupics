@@ -63,7 +63,7 @@ def new_pic(request):
         form = UploadPicForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                blocked_poster = Blocked_Poster.objects.get(name=request.POST['poster'])
+                blocked_poster = Blocked_Poster.objects.get(name=request.POST['poster'].lower())
                 return render(request, 'wall/blocked.html', {'passive_agressive': settings.PASSIVE_AGRESSIVE})
             except ObjectDoesNotExist:
                 pass
