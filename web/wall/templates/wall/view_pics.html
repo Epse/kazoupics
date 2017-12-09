@@ -16,6 +16,14 @@
         <h2 id="poster">{{ pic.poster }}</h2>
     </div>
 </div>
+
+{% if bigscreen %}
+<div class="logo">
+    {% load static %}
+    <img class="u-max-full-width" alt="logo" src="{% static 'wall/img/logo.png' %}"/>
+</div>
+{% endif %}
+
 {% endblock content %}
 
 {% block afterbody %}
