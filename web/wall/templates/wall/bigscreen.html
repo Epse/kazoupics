@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Kazou Fotowall{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300" rel="stylesheet">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'wall/css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'wall/css/bigscreen.css' %}">
+</head>
+<body>
+    <div id="pictureside">
+        <div id="imgcont">
+            <img id="hero-image" class="u-max-full-width" src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
+            <h2 id="poster">{{ pic.poster }}</h2>
+        </div>
+    </div>
+    <div id="smsside">
+        {% for sms in sms_list %}
+        <div class="sender">
+            {{ sms.sender }}:
+        </div>
+        <div class="sms_body">
+            {{ sms.text }}
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+    <div id="logo">
+        <img class="u-max-full-width" alt="logo" src="{% static 'wall/img/logo.png' %}"/>
+    </div>
+</body>
+  <script type="text/javascript">
+   function reqListener() {
+       var data = JSON.parse(this.responseText);
+       var poster_div = document.getElementById('poster');
+       var img = document.getElementById('hero-image');
+
+       poster_div.textContent = data.poster;
+       img.setAttribute("src", data.url);
+   }
+
+   function smsListener() {
+       document.getElementById('smsside').innerHTML = this.responseText;
+   }
+
+   window.addEventListener("load", e => {
+       window.setInterval(function() {
+           var oReq = new XMLHttpRequest();
+           oReq.addEventListener("load", reqListener);
+           var hero_image = document.getElementById('hero-image');
+           oReq.open("GET", "/next/" + hero_image.getAttribute("src"));
+           oReq.send();
+           var smsReq = new XMLHttpRequest();
+           smsReq.addEventListener("load", smsListener);
+           smsReq.open("GET", "/getsms/");
+           smsReq.send();
+
+       }, {{ min_display_time }});
+
+   });
+  </script>
+</html>

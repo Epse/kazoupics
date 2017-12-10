@@ -21,12 +21,12 @@ def _get_pic():
 
 def show_pics(request):
     pic = _get_pic()
-    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': False, 'min_display_time': settings.MIN_DISPLAY_TIME})
+    return render(request, "wall/view_pics.html", {'pic': pic, 'min_display_time': settings.MIN_DISPLAY_TIME})
 
 def bigscreen(request):
     pic = _get_pic()
     sms_list = Sms.objects.order_by('-timestamp')[:5]
-    return render(request, "wall/view_pics.html", {'pic': pic, 'bigscreen': True, 'min_display_time': settings.MIN_DISPLAY_TIME, 'sms_list': sms_list})
+    return render(request, "wall/bigscreen.html", {'pic': pic, 'min_display_time': settings.MIN_DISPLAY_TIME, 'sms_list': sms_list})
 
 
 def next_pic(request, current=''):

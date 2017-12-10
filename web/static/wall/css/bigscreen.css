@@ -1,0 +1,73 @@
+html {
+    background-color: #00cf97;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Open Sans Condensed', sans-serif !important;
+    color: #282f39 !important;
+}
+
+.u-max-full-width {
+    max-width: 100%;
+}
+
+#smsside {
+    width: 25vw;
+    box-sizing: border-box;
+    height: 100vh;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #282f39;
+    font-size: 5vh;
+    overflow: hidden;
+    color: #eee;
+    padding: 0.5em;
+    line-height: 1.1;
+    word-wrap: break-word;
+}
+
+#smsside .sender {
+    font-weight: bold;
+}
+
+#pictureside {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    width: 75vw;
+    box-sizing: border-box;
+    max-height: 100vh;
+    padding: 1em;
+}
+
+#imgcont {
+    position: relative;
+}
+
+#poster {
+    text-align: center;
+    font-weight: bold;
+    background-color: #282f39;
+    color: #eee;
+    padding: 1em;
+    text-transform: capitalize;
+    margin-bottom: 0;
+}
+
+#logo {
+    max-height: 20vh;
+    max-width: 20vw;
+    position: absolute;
+    margin-left: 1rem;
+    left: 0;
+    top: 0;
+}
+
+#hero-image {
+    display: block;
+    margin: 0 auto;
+    max-height: 80vh;
+    min-width: 30%;
+}

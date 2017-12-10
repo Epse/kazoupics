@@ -1,39 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if bigscreen is False %}
-<div class="section">
-    <div class="container">
-        <a href="{% url 'newpic' %}" class="button button-primary">Post een foto!</a>
-        <div id="img">
+<div class="container wide">
+    <div class="row">
+        <div class="section">
+            <a href="{% url 'newpic' %}" class="button button-primary">Post een foto!</a>
+            <div id="img">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="section">
+            <img class="u-max-full-width hero-image" src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
+            <h2 id="poster">{{ pic.poster }}</h2>
         </div>
     </div>
 </div>
-{% endif %}
-<div class="section {% if bigscreen %}bigscreen{% endif %}">
-    <div class="container {% if bigscreen %}wide{% endif %}">
-        <img class="u-max-full-width hero-image" src="{{ pic.url }}" alt="Foto van {{ pic.poster }}" />
-        <h2 id="poster">{{ pic.poster }}</h2>
-    </div>
-</div>
-
-{% if bigscreen %}
-<div class="logo">
-    {% load static %}
-    <img class="u-max-full-width" alt="logo" src="{% static 'wall/img/logo.png' %}"/>
-</div>
-<div id="sms">
-    {% for sms in sms_list %}
-    <div class="sender">
-        {{ sms.sender }}:
-    </div>
-    <div class="sms_body">
-        {{ sms.text }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
 {% endblock content %}
 
 {% block afterbody %}
@@ -48,10 +30,6 @@
        img.setAttribute("src", data.url);
    }
 
-   function smsListener() {
-       document.getElementById('sms').innerHTML = this.responseText;
-   }
-
    window.addEventListener("load", e => {
        window.setInterval(function() {
            var oReq = new XMLHttpRequest();
@@ -59,13 +37,6 @@
            var hero_image = document.querySelector('.hero-image');
            oReq.open("GET", "/next/" + hero_image.getAttribute("src"));
            oReq.send();
-           {% if bigscreen %}
-           var smsReq = new XMLHttpRequest();
-           smsReq.addEventListener("load", smsListener);
-           smsReq.open("GET", "/getsms/");
-           smsReq.send();
-           {% endif %}
-
        }, {{ min_display_time }});
 
    });
