@@ -54,7 +54,7 @@
            oReq.send();
            var smsReq = new XMLHttpRequest();
            smsReq.addEventListener("load", smsListener);
-           smsReq.open("GET", "/getsms/");
+           smsReq.open("GET", "{% url 'get_sms' %}");
            smsReq.send();
 
        }, {{ min_display_time }});

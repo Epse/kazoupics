@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^newpic/$', new_pic, name='newpic'),
     url(r'^bigscreen/', bigscreen, name='bigscreen'),
     url(r'^incomingsms/$', incoming_sms),
-    url(r'^getsms/$', get_sms),
+    url(r'^getsms/$', get_sms, name='get_sms'),
     url(r'^leaderboard/$', leaderboard, name='leaderboard'),
     url(r'^$', show_pics, name='show_pics')
 ]
