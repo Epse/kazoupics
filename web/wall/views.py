@@ -1,6 +1,7 @@
 import os
 import random
 from django.shortcuts import render
+from django.db.models import Count
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.conf import settings
@@ -100,3 +101,11 @@ def incoming_sms(request):
 def get_sms(request):
     sms_list = Sms.objects.order_by('-timestamp')[:5]
     return render(request, "wall/sms.html", {'sms_list': sms_list})
+
+
+def leaderboard(request):
+    # This gets all unique "sender" values, annotates them with their count by primary key,
+    # and orders them large to small by that count. We only need the first 10
+    sms_leaders = Sms.objects.values('sender').annotate(n=Count('pk')).order_by('-n')[:10]
+    pic_leaders = Picture.objects.values('poster').annotate(n=Count('pk')).order_by('-n')[:10]
+    return render(request, 'wall/leaderboard.html', {'sms_leaders': sms_leaders, 'pic_leaders': pic_leaders})
