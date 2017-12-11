@@ -8,6 +8,9 @@ class Picture(models.Model):
     ip = models.CharField(max_length=100)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
+    def __str__(self):
+        return 'Picture by ' + self.poster
+
 
 class Blocked_Poster(models.Model):
     name = models.CharField(max_length=255, db_index=True, blank=True, null=False)
@@ -24,11 +27,17 @@ class Blocked_Poster(models.Model):
                 pic.delete()
         return super(Blocked_Poster, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return 'IP: ' + self.ip + '; Name: ' + self.name
+
 
 class Sms(models.Model):
     sender = models.CharField(max_length=20, blank=False, null=False)
     text = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
+
+    def __str__(self):
+        return self.sender + ': ' + self.text[:10]
 
 
 class Blocked_Number(models.Model):
@@ -38,3 +47,6 @@ class Blocked_Number(models.Model):
         for sms in Sms.objects.filter(sender=self.number):
             sms.delete()
         return super(Blocked_Number, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.number)
