@@ -30,6 +30,10 @@ class Blocked_Poster(models.Model):
     def __str__(self):
         return 'IP: ' + self.ip + '; Name: ' + self.name
 
+    class Meta:
+        verbose_name = "Blocked Poster"
+        verbose_name_plural = "Blocked Posters"
+
 
 class Sms(models.Model):
     sender = models.CharField(max_length=20, blank=False, null=False)
@@ -50,3 +54,7 @@ class Blocked_Number(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+    class Meta:
+        verbose_name = "Blocked Number"
+        verbose_name_plural = "Blocked Numbers"
