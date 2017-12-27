@@ -17,3 +17,5 @@ function clean() {
     exec docker-compose down
     exec docker-compose rm -a
 }
+
+$@
