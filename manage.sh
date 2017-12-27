@@ -5,8 +5,7 @@ function up() {
 }
 
 function setup() {
-    exec docker-compose up -d --build
-    exec docker-compose exec web ./manage.py createsuperuser
+    docker-compose up -d --build && docker-compose exec web ./manage.py createsuperuser
 }
 
 function stop() {
