@@ -58,3 +58,11 @@ class Blocked_Number(models.Model):
     class Meta:
         verbose_name = "Blocked Number"
         verbose_name_plural = "Blocked Numbers"
+
+
+class Ad(models.Model):
+    url = models.CharField(max_length=255, blank=False, null=False)
+    poster = models.CharField(max_length=255, blank=False, null=False)
+
+    def __str__(self):
+        return 'Name: ' + self.name
