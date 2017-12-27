@@ -1,19 +1,19 @@
 #!/bin/bash
 
-function up {
+function up() {
     exec docker-compose up -d
 }
 
-function setup {
+function setup() {
     exec docker-compose up -d --build
     exec docker-compose exec web ./manage.py createsuperuser
 }
 
-function stop {
+function stop() {
     exec docker-compose stop
 }
 
-function clean {
+function clean() {
     exec docker-compose down
     exec docker-compose rm -a
 }
