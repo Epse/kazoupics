@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function up() {
-    exec docker-compose up -d
+    docker-compose up -d
 }
 
 function setup() {
@@ -9,12 +9,17 @@ function setup() {
 }
 
 function stop() {
-    exec docker-compose stop
+    docker-compose stop
 }
 
 function clean() {
-    exec docker-compose down
-    exec docker-compose rm -a
+    docker-compose down
+    docker-compose rm
+}
+
+function redo() {
+    clean
+    setup
 }
 
 $@
