@@ -63,7 +63,7 @@ def next_pic(request, current=''):
         except ObjectDoesNotExist:
             pic = _get_pic()
 
-    return JsonResponse({'url': pic.url, 'poster': pic.poster})
+    return JsonResponse({'url': pic.url, 'poster': pic.poster, 'is_ad': pic.is_ad})
 
 
 def _handle_pic(f):
