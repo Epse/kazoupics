@@ -127,3 +127,5 @@ STATICFILES_DIRS = [
 PASSIVE_AGRESSIVE = True
 MIN_DISPLAY_TIME = 1000
 PIC_STORAGE_LOCATION = os.path.join(BASE_DIR, 'static', 'pics')
+# the percentage of times an ad will pop up
+AD_CHANCE = 10

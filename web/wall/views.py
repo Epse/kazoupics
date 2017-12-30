@@ -12,13 +12,14 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 def _get_pic():
-    if Ad.objects.count() > 0 and random.randrange(1, 100) < 10:
+    if Ad.objects.count() > 0\
+       and random.randrange(1, 100) < settings.AD_CHANCE:
         random_index = random.randrange(Ad.objects.count())
         pic = Ad.objects.get(id=random_index)
 
     # This gives ads from WG Congé an extra chance of showing up. I know it's cheating
     elif Ad.objects.filter(poster='WG Congé')\
-            and random.randrange(1, 100) < 20:
+            and random.randrange(1, 100) < settings.AD_CHANCE + 10:
         id_list = []
         for ad in Ad.objects.filter(poster='WG Congé'):
             id_list.append(ad.id)
