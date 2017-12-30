@@ -44,26 +44,30 @@
 
        poster_div.textContent = data.poster;
        img.setAttribute("src", data.url);
+       console.log(data.is_ad?5000:1000);
+       setTimeout(picInterval, (data.is_ad?5000:1000) );
    }
 
    function smsListener() {
        document.getElementById('smsside').innerHTML = this.responseText;
    }
 
+   function picInterval() {
+       var oReq = new XMLHttpRequest();
+       oReq.addEventListener("load", reqListener);
+       var hero_image = document.getElementById('hero-image');
+       oReq.open("GET", "/next/" + hero_image.getAttribute("src"));
+       oReq.send();
+   }
+
    window.addEventListener("load", e => {
        window.setInterval(function() {
-           var oReq = new XMLHttpRequest();
-           oReq.addEventListener("load", reqListener);
-           var hero_image = document.getElementById('hero-image');
-           oReq.open("GET", "/next/" + hero_image.getAttribute("src"));
-           oReq.send();
            var smsReq = new XMLHttpRequest();
            smsReq.addEventListener("load", smsListener);
            smsReq.open("GET", "{% url 'get_sms' %}");
            smsReq.send();
-
        }, {{ min_display_time }});
-
+       picInterval();
    });
   </script>
 </html>

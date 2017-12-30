@@ -6,28 +6,51 @@ from django.urls import reverse
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Picture, Blocked_Poster, Sms, Blocked_Number
+from .models import Picture, Blocked_Poster, Sms, Blocked_Number, Ad
 from .forms import UploadPicForm
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 def _get_pic():
-    pic_set = Picture.objects.order_by('-timestamp')[:1]
-    if len(pic_set) < 1:
-        pic = Picture(url="//lorempixel.com/640/480", poster="lorempixel")
+    if Ad.objects.count() > 0\
+       and random.randrange(1, 100) < settings.AD_CHANCE:
+        random_index = random.randrange(Ad.objects.count())
+        pic = Ad.objects.get(id=random_index)
+
+    # This gives ads from WG Congé an extra chance of showing up. I know it's cheating
+    elif Ad.objects.filter(poster='WG Congé')\
+            and random.randrange(1, 100) < settings.AD_CHANCE + 10:
+        id_list = []
+        for ad in Ad.objects.filter(poster='WG Congé'):
+            id_list.append(ad.id)
+
+        random_index = random.choice(id_list)
+        pic = Ad.objects.get(id=random_index)
+
     else:
-        pic = pic_set[0]
+        pic_set = Picture.objects.order_by('-timestamp')[:1]
+        if len(pic_set) < 1:
+            pic = Picture(url="//lorempixel.com/640/480", poster="lorempixel")
+        else:
+            pic = pic_set[0]
 
     return pic
 
+
 def show_pics(request):
     pic = _get_pic()
-    return render(request, "wall/view_pics.html", {'pic': pic, 'min_display_time': settings.MIN_DISPLAY_TIME})
+    return render(request, "wall/view_pics.html",
+                  {'pic': pic,
+                   'min_display_time': settings.MIN_DISPLAY_TIME})
+
 
 def bigscreen(request):
     pic = _get_pic()
     sms_list = Sms.objects.order_by('-timestamp')[:5]
-    return render(request, "wall/bigscreen.html", {'pic': pic, 'min_display_time': settings.MIN_DISPLAY_TIME, 'sms_list': sms_list})
+    return render(request, "wall/bigscreen.html",
+                  {'pic': pic,
+                   'min_display_time': settings.MIN_DISPLAY_TIME,
+                   'sms_list': sms_list})
 
 
 def next_pic(request, current=''):
@@ -40,7 +63,7 @@ def next_pic(request, current=''):
         except ObjectDoesNotExist:
             pic = _get_pic()
 
-    return JsonResponse({ 'url': pic.url, 'poster': pic.poster })
+    return JsonResponse({'url': pic.url, 'poster': pic.poster, 'is_ad': pic.is_ad})
 
 
 def _handle_pic(f):
@@ -54,9 +77,11 @@ def _handle_pic(f):
 
 def new_pic(request):
     try:
-        blocked_poster = Blocked_Poster.objects.get(ip=request.META.get('REMOTE_ADDR'))
+        Blocked_Poster.objects.get(
+            ip=request.META.get('REMOTE_ADDR'))
         # this only happens if there is such a poster
-        return render(request, 'wall/blocked.html', {'passive_agressive': settings.PASSIVE_AGRESSIVE})
+        return render(request, 'wall/blocked.html',
+                      {'passive_agressive': settings.PASSIVE_AGRESSIVE})
     except ObjectDoesNotExist:
         # We're all fine here. Still need to test the username though
         pass
@@ -65,14 +90,17 @@ def new_pic(request):
         form = UploadPicForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                blocked_poster = Blocked_Poster.objects.get(name=request.POST['poster'].lower())
-                return render(request, 'wall/blocked.html', {'passive_agressive': settings.PASSIVE_AGRESSIVE})
+                Blocked_Poster.objects.get(name=request.POST['poster'].lower())
+                return render(request,
+                              'wall/blocked.html',
+                              {'passive_agressive': settings.PASSIVE_AGRESSIVE})
             except ObjectDoesNotExist:
                 pass
 
             filename = _handle_pic(request.FILES['file'])
-            Picture.objects.create(poster=request.POST['poster'], url=static("pics/" + filename), ip=request.META.get('REMOTE_ADDR'))
-            print(static(filename))
+            Picture.objects.create(poster=request.POST['poster'],
+                                   url=static("pics/" + filename),
+                                   ip=request.META.get('REMOTE_ADDR'))
             return HttpResponseRedirect(reverse('show_pics'))
         else:
             form = UploadPicForm()
@@ -90,7 +118,7 @@ def incoming_sms(request):
         return HttpResponse('')
     else:
         try:
-            blocked_number = Blocked_Number.objects.get(number=phone)
+            Blocked_Number.objects.get(number=phone)
             return HttpResponse('')
         except ObjectDoesNotExist:
             pass
@@ -104,8 +132,14 @@ def get_sms(request):
 
 
 def leaderboard(request):
-    # This gets all unique "sender" values, annotates them with their count by primary key,
+    # This gets all unique "sender" values,
+    # annotates them with their count by primary key,
     # and orders them large to small by that count. We only need the first 10
-    sms_leaders = Sms.objects.values('sender').annotate(n=Count('pk')).order_by('-n')[:10]
-    pic_leaders = Picture.objects.values('poster').annotate(n=Count('pk')).order_by('-n')[:10]
-    return render(request, 'wall/leaderboard.html', {'sms_leaders': sms_leaders, 'pic_leaders': pic_leaders})
+    sms_leaders = Sms.objects.values('sender')\
+                             .annotate(n=Count('pk'))\
+                             .order_by('-n')[:10]
+    pic_leaders = Picture.objects.values('poster')\
+                                 .annotate(n=Count('pk'))\
+                                 .order_by('-n')[:10]
+    return render(request, 'wall/leaderboard.html',
+                  {'sms_leaders': sms_leaders, 'pic_leaders': pic_leaders})
