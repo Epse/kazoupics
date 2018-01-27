@@ -14,18 +14,14 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 def _get_pic():
     if Ad.objects.count() > 0\
        and random.randrange(1, 100) < settings.AD_CHANCE:
-        random_index = random.randrange(Ad.objects.count())
-        pic = Ad.objects.get(id=random_index)
+        items = Ad.objects.all()
+        pic = random.choice(items)
 
     # This gives ads from WG Congé an extra chance of showing up. I know it's cheating
     elif Ad.objects.filter(poster='WG Congé')\
-            and random.randrange(1, 100) < settings.AD_CHANCE + 10:
-        id_list = []
-        for ad in Ad.objects.filter(poster='WG Congé'):
-            id_list.append(ad.id)
-
-        random_index = random.choice(id_list)
-        pic = Ad.objects.get(id=random_index)
+            and random.randrange(1, 100) < settings.AD_CHANCE:
+        items = Ad.objects.filter(poster='WG Congé')
+        pic = random.choice(items)
 
     else:
         pic_set = Picture.objects.order_by('-timestamp')[:1]
@@ -127,7 +123,7 @@ def incoming_sms(request):
 
 
 def get_sms(request):
-    sms_list = Sms.objects.order_by('-timestamp')[:5]
+    sms_list = Sms.objects.order_by('-timestamp')[:10]
     return render(request, "wall/sms.html", {'sms_list': sms_list})
 
 
@@ -143,3 +139,14 @@ def leaderboard(request):
                                  .order_by('-n')[:10]
     return render(request, 'wall/leaderboard.html',
                   {'sms_leaders': sms_leaders, 'pic_leaders': pic_leaders})
+
+
+def ban(request, username):
+    try:
+        Blocked_Poster.objects.get(name__iexact=username)
+        return HttpResponse('')
+    except ObjectDoesNotExist:
+        pass
+    pic = Picture.objects.filter(poster__iexact=username).order_by('-timestamp')[0]
+    Blocked_Poster.objects.create(name=username, ip=pic.ip)
+    return HttpResponse('')

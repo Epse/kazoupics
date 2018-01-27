@@ -23,9 +23,6 @@
         <div class="sender">0483 03 83 76</div>
         <hr>
         {% for sms in sms_list %}
-        <div class="sender">
-            {{ sms.sender }}:
-        </div>
         <div class="sms_body">
             {{ sms.text }}
         </div>
