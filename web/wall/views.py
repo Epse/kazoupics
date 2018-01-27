@@ -3,11 +3,12 @@ import random
 from django.shortcuts import render
 from django.db.models import Count
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Picture, Blocked_Poster, Sms, Blocked_Number, Ad
-from .forms import UploadPicForm
+from .forms import UploadPicForm, UploadAdForm
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
@@ -150,3 +151,20 @@ def ban(request, username):
     pic = Picture.objects.filter(poster__iexact=username).order_by('-timestamp')[0]
     Blocked_Poster.objects.create(name=username, ip=pic.ip)
     return HttpResponse('')
+
+
+@login_required
+def add_ad(request):
+    if request.method == 'POST':
+        form = UploadAdForm(request.POST, request.FILES)
+        if form.is_valid():
+            filename = _handle_pic(request.FILES['file'])
+            Ad.objects.create(poster=request.POST['poster'],
+                                   url=static("pics/" + filename))
+            return HttpResponseRedirect(reverse('show_pics'))
+        else:
+            form = UploadAdForm()
+            return render(request, 'wall/ad.html', {'form': form})
+    else:
+        form = UploadAdForm()
+        return render(request, 'wall/ad.html', {'form': form})

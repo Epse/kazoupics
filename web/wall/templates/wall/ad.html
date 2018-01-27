@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section">
+    <div class="container uploadform">
+        <form action="{% url 'add_ad' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row u-max-full-width">
+                {{ from.non_field_errors }}
+            </div>
+            <div class="row u-max-full-width">
+                {{ form.poster.errors }}
+                {{ form.poster.label_tag }}
+                {{ form.poster }}
+            </div>
+            <div class="row u-max-full-width">
+                {{ form.file.errors }}
+                {{ form.file.label_tag }}
+                {{ form.file }}
+            </div>
+            <input class="button button-primary" value="Verzenden" type="submit">
+        </form>
+    </div>
+</div>
+{% endblock content %}
