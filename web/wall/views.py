@@ -161,7 +161,7 @@ def add_ad(request):
             filename = _handle_pic(request.FILES['file'])
             Ad.objects.create(poster=request.POST['poster'],
                                    url=static("pics/" + filename))
-            return HttpResponseRedirect(reverse('show_pics'))
+            return HttpResponseRedirect(reverse('add_ad'))
         else:
             form = UploadAdForm()
             return render(request, 'wall/ad.html', {'form': form})
