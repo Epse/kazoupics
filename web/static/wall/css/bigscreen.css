@@ -71,3 +71,7 @@ body {
     max-height: 80vh;
     min-width: 30%;
 }
+
+.smsdelbtn {
+    display: none;
+}

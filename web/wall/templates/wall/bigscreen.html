@@ -64,6 +64,7 @@
            smsReq.open("GET", "{% url 'get_sms' %}");
            smsReq.send();
        }, {{ min_display_time }});
+       console.log('refresh sms every ' + {{ min_display_time }});
        picInterval();
    });
   </script>

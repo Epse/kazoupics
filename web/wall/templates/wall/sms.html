@@ -4,8 +4,18 @@
 <div class="sender">0483 03 83 76</div>
 <hr>
 {% for sms in sms_list %}
+{% if request.user.is_staff %}
+<a href="{% url 'del_sms' sms.id %}" class="button smsdelbtn">X</a>
+{% endif %}
 <div class="sms_body">
     {{ sms.text }}
 </div>
 <hr>
 {% endfor %}
+
+<script>
+ // This only runs when getsms page is loaded, not on ajax.
+ window.addEventListener("load", e => {
+    window.setInterval(()=>{window.location.reload(true)}, 1000);
+ });
+</script>

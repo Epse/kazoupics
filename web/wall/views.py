@@ -1,6 +1,6 @@
 import os
 import random
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -168,3 +168,11 @@ def add_ad(request):
     else:
         form = UploadAdForm()
         return render(request, 'wall/ad.html', {'form': form})
+
+
+@login_required
+def del_sms(request, id):
+    sms = get_object_or_404(Sms, id=id)
+    sms.delete()
+    return HttpResponseRedirect(reverse('get_sms'))
+

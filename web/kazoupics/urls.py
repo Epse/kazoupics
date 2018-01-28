@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from wall.views import show_pics, next_pic, new_pic, bigscreen, incoming_sms, get_sms, leaderboard, ban, add_ad
+from wall.views import show_pics, next_pic, new_pic, bigscreen, incoming_sms, get_sms, leaderboard, ban, add_ad, del_sms
 
 
 urlpatterns = [
@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^leaderboard/$', leaderboard, name='leaderboard'),
     url(r'^ban/(?P<username>.*)/$', ban, name='ban'),
     url(r'^add_ad/$', add_ad, name='add_ad'),
+    url(r'^del_sms/(?P<id>[0-9]+)/$', del_sms, name='del_sms'),
     url(r'^$', show_pics, name='show_pics')
 ]
