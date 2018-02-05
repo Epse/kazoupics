@@ -43,7 +43,7 @@ def show_pics(request):
 
 def bigscreen(request):
     pic = _get_pic()
-    sms_list = Sms.objects.order_by('-timestamp')[:5]
+    sms_list = Sms.objects.order_by('-timestamp')[:15]
     return render(request, "wall/bigscreen.html",
                   {'pic': pic,
                    'min_display_time': settings.MIN_DISPLAY_TIME,
@@ -124,7 +124,7 @@ def incoming_sms(request):
 
 
 def get_sms(request):
-    sms_list = Sms.objects.order_by('-timestamp')[:10]
+    sms_list = Sms.objects.order_by('-timestamp')[:15]
     return render(request, "wall/sms.html", {'sms_list': sms_list})
 
 
