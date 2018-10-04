@@ -139,12 +139,21 @@ def leaderboard(request):
                              .values('sender')\
                              .annotate(n=Count('pk'))\
                              .order_by('-n')[:10]
+    sms_spam_leaders = Sms.objects.filter(deleted=True)\
+                             .values('sender')\
+                             .annotate(n=Count('pk'))\
+                             .order_by('-n')[:10]
     pic_leaders = Picture.objects.filter(deleted=False)\
                                  .values('poster')\
                                  .annotate(n=Count('pk'))\
                                  .order_by('-n')[:10]
+    pic_spam_leaders = Picture.objects.filter(deleted=True)\
+                                 .values('poster')\
+                                 .annotate(n=Count('pk'))\
+                                 .order_by('-n')[:10]
     return render(request, 'wall/leaderboard.html',
-                  {'sms_leaders': sms_leaders, 'pic_leaders': pic_leaders})
+                  {'sms_leaders': sms_leaders, 'pic_leaders': pic_leaders,
+                      'sms_spam_leaders': sms_spam_leaders, 'pic_spam_leaders': pic_spam_leaders})
 
 
 def ban(request, username):

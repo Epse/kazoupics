@@ -17,9 +17,29 @@
     </div>
     <div class="row">
         <div class="section">
+            <h2>SMS-spammers</h2>
+            <ol>
+                {% for sender in sms_spam_leaders %}
+                <li>{{ sender.sender }} ({{ sender.n }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="section">
             <h2>Foto's</h2>
             <ol>
                 {% for sender in pic_leaders %}
+                <li>{{ sender.poster }} ({{ sender.n }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="section">
+            <h2>Foto's spammers</h2>
+            <ol>
+                {% for sender in pic_spam_leaders %}
                 <li>{{ sender.poster }} ({{ sender.n }})</li>
                 {% endfor %}
             </ol>
