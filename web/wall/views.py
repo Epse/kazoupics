@@ -25,7 +25,7 @@ def _get_pic():
         pic = random.choice(items)
 
     else:
-        pic_set = Picture.objects.order_by('-timestamp')[:1]
+        pic_set = Picture.objects.filter(deleted=False).order_by('-timestamp')[:1]
         if len(pic_set) < 1:
             pic = Picture(url="//lorempixel.com/640/480", poster="lorempixel")
         else:
@@ -43,7 +43,7 @@ def show_pics(request):
 
 def bigscreen(request):
     pic = _get_pic()
-    sms_list = Sms.objects.order_by('-timestamp')[:15]
+    sms_list = Sms.objects.filter(deleted=False).order_by('-timestamp')[:15]
     return render(request, "wall/bigscreen.html",
                   {'pic': pic,
                    'min_display_time': settings.MIN_DISPLAY_TIME,
@@ -57,6 +57,8 @@ def next_pic(request, current=''):
         try:
             current_pic = Picture.objects.get(url=current)
             pic = Picture.objects.get(id=current_pic.id + 1)
+            if (pic.deleted):
+                pic = _get_pic()
         except ObjectDoesNotExist:
             pic = _get_pic()
 
@@ -116,6 +118,7 @@ def incoming_sms(request):
     else:
         try:
             Blocked_Number.objects.get(number=phone)
+            Sms.objects.create(sender=phone, text=text, deleted=True)
             return HttpResponse('')
         except ObjectDoesNotExist:
             pass
@@ -124,7 +127,7 @@ def incoming_sms(request):
 
 
 def get_sms(request):
-    sms_list = Sms.objects.order_by('-timestamp')[:15]
+    sms_list = Sms.objects.filter(deleted=False).order_by('-timestamp')[:15]
     return render(request, "wall/sms.html", {'sms_list': sms_list})
 
 
@@ -132,10 +135,12 @@ def leaderboard(request):
     # This gets all unique "sender" values,
     # annotates them with their count by primary key,
     # and orders them large to small by that count. We only need the first 10
-    sms_leaders = Sms.objects.values('sender')\
+    sms_leaders = Sms.objects.filter(deleted=False)\
+                             .values('sender')\
                              .annotate(n=Count('pk'))\
                              .order_by('-n')[:10]
-    pic_leaders = Picture.objects.values('poster')\
+    pic_leaders = Picture.objects.filter(deleted=False)\
+                                 .values('poster')\
                                  .annotate(n=Count('pk'))\
                                  .order_by('-n')[:10]
     return render(request, 'wall/leaderboard.html',
@@ -173,6 +178,7 @@ def add_ad(request):
 @login_required
 def del_sms(request, id):
     sms = get_object_or_404(Sms, id=id)
-    sms.delete()
+    sms.deleted = True
+    sms.save()
     return HttpResponseRedirect(reverse('get_sms'))
 
